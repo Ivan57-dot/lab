@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Есть словарь магазинов с распродажами
-
 shops = {
     'ашан':
         [
@@ -27,12 +25,37 @@ shops = {
         ],
 }
 
-# Создайте словарь цен на продкты следующего вида (писать прямо в коде)
-sweets = {
-    'название сладости': [
-        {'shop': 'название магазина', 'price': 99.99},
-        # TODO тут с клавиатуры введите магазины и цены (можно копипастить ;)
-    ],
-    # TODO тут с клавиатуры введите другую сладость и далее словарь магазинов
-}
-# Указать надо только по 2 магазина с минимальными ценами
+sweets = {}
+
+for sweet_name in ['печенье', 'конфеты', 'карамель', 'пирожное']:
+    prices = []
+    
+    for shop_name in shops:
+        products = shops[shop_name]
+        
+        for product in products:
+            if product['name'] == sweet_name:
+                prices.append({
+                    'shop': shop_name,
+                    'price': product['price']
+                })
+    
+    list = []
+    for item in prices:
+        list.append([item['price'], item])
+    
+    list.sort()
+    
+    sorted_prices = []
+    for price, item in list:
+        sorted_prices.append(item)
+    
+    sweets[sweet_name] = sorted_prices[:2]
+
+print("\nТовар        Магазин       Цена")
+print("-" * 30)
+
+for sweet_name in sweets:
+    print(f"\n{sweet_name}:")
+    for shop_info in sweets[sweet_name]:
+        print(f"           {shop_info['shop']:<10} {shop_info['price']} руб.")
