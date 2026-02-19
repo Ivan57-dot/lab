@@ -31,9 +31,8 @@
 Выполнено сравнение расстояния с радиусом 
 
 **Результат:**
-5541.7693
-False
-True
+<img width="98" height="51" alt="image" src="https://github.com/user-attachments/assets/d66c3ba9-c2af-462e-8183-6413661bb7b4" />
+
  
 
 ## **Задание 3: 02_operations.py** 
@@ -51,7 +50,8 @@ True
 1 × (2 + 3) × 5 = 25 
 
 **Результат:**
-25
+<img width="34" height="16" alt="image" src="https://github.com/user-attachments/assets/078adb10-2f73-4949-9f3d-458345da8a40" />
+
 
  
 
@@ -66,10 +66,8 @@ True
 Извлечение фильмов срезами 
 
 **Результат:**
-Терминатор
-Назад в будущее
-Пятый элемент
-Чужие
+<img width="183" height="74" alt="image" src="https://github.com/user-attachments/assets/7268361c-7093-46d7-875c-c5dcd7fad9ad" />
+
  
 
  
