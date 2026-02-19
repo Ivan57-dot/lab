@@ -16,9 +16,7 @@ distances = {
     'London': {'Moscow': (ml), 'Paris': (lp)},
     'Paris': {'Moscow': (mp), 'London': (lp)}
 }
-print(distances)
-
-
-
-
-
+for city in distances:
+    print(f"\n{city}:")
+    for target, dist in distances[city].items():
+        print(f"     {target} - {round(dist, 2)}")
