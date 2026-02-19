@@ -13,6 +13,7 @@
 Выполнен форматированный вывод результатов с новой строки для каждого города 
 
 **Результат:** 
+<img width="207" height="181" alt="image" src="https://github.com/user-attachments/assets/89bbef7a-140c-4897-ba63-675052c1fe15" />
 
 
 
