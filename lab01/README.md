@@ -251,7 +251,7 @@ git pull
 
 https://python.org 
 
-https://pythomworld.ru 
+https://pythonworld.ru 
 
 https://habr.com 
 
