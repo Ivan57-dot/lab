@@ -13,7 +13,7 @@
 Выполнен форматированный вывод результатов с новой строки для каждого города 
 
 **Результат:** 
-<img width="249" height="190" alt="image" src="https://github.com/user-attachments/assets/11a929a4-f75a-41f9-a5b5-32664185d938" />
+
 
 
 ## **Задание 2: 01_circle.py**
