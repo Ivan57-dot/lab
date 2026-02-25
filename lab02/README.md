@@ -34,4 +34,7 @@
 
 **Результат:** <img width="391" height="21" alt="image" src="https://github.com/user-attachments/assets/9420d293-548a-4ca2-af19-0a60173867ad" />
 
+## **ИСПОЛЬЗУЕМЫЕ МАТЕРИАЛЫ**
+
+
  
