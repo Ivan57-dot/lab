@@ -9,7 +9,7 @@
 2. Проверить наличие буквы 'И' в каждой комбинации
 3. Подсчитать количество подходящих комбинаций
 
-**Результат:**<img width="117" height="21" alt="image" src="https://github.com/user-attachments/assets/26392882-febe-4f0f-ac2d-d1f3751766a4" />
+**Результат:** <img width="117" height="21" alt="image" src="https://github.com/user-attachments/assets/26392882-febe-4f0f-ac2d-d1f3751766a4" />
 
 ## **Задание 2**
 
@@ -21,5 +21,6 @@
 3. Перевести результат в восьмеричную систему с помощью oct()
 4. Подсчитать количество нулей
 
-**Результат:**
+**Результат:** <img width="109" height="21" alt="image" src="https://github.com/user-attachments/assets/b814ba06-3b85-46bf-b46b-8984304bd69e" />
+
  
