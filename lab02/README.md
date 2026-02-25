@@ -36,5 +36,13 @@
 
 ## **ИСПОЛЬЗУЕМЫЕ МАТЕРИАЛЫ**
 
+https://docs.python.org/3/library/itertools.html
+
+https://docs.python.org/3/library/functions.html#oct
+
+https://docs.python.org/3/library/stdtypes.html#str.count
+
+https://stackoverflow.com/questions/171765/
+
 
  
