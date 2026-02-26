@@ -25,6 +25,6 @@ def find_norec(data, x):
     return None
 
 data = [1, 2, [3, 4, [5, [6, []]]]]
-print(find_rec(data, 'spam'))
-print(find_norec(data, 'spam'))
+print("Рекурсивно: ", find_rec(data, 'spam'))
+print("Без рекурсии: ", find_norec(data, 'spam'))
 
