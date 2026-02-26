@@ -18,5 +18,5 @@ def calc_norec(k, u, v):
         b = new_b
     return a, b
 
-print(calc_rec(3, 1, 2))
-print(calc_norec(3, 1, 2))
+print("Рекурсивно: ", calc_rec(3, 1, 2))
+print("Без рекурсии: ", calc_norec(3, 1, 2))
