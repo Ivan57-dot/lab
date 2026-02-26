@@ -23,6 +23,14 @@
 
 ## **Используемые материалы**
 
+Рекурсия: 
+https://pythonworld.ru/osnovy/rekursiya.html
+
+Реккурентные формулы:
+https://ru.wikipedia.org/wiki/Реккурентная_формула
+
+Типы данных: https://docs.python.org/3/library/stdtypes.html
+
 
 
 
