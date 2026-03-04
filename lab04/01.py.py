@@ -13,8 +13,8 @@ def validate(condition1, condition2):
 
 @validate(lambda x: x > 0, lambda y: isinstance(y, str))
 def test(x, y):
-    print(f"ok: {x}, {y}")
+    print(x, y)
 
-test(5, "привет")    # ok: 5, привет
-test(-1, "привет")   # Ошибка: первый аргумент неправильный
-test(5, 123)         # Ошибка: второй аргумент неправильный
+test(5, "привет")    
+test(-1, "привет")  
+test(5, 123)         
