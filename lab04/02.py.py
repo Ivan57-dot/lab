@@ -1,10 +1,10 @@
 def validate(arg1):
     def decorator(f):
-        def provaerka(arg):
-            if not condition(arg):
+        def proverka(arg):
+            if not arg1(arg):
                 print(f"Ошибка: аргумент {arg} неправильный")
                 return None
-            return func(arg)
+            return f(arg)
         return proverka
     return decorator
 
@@ -32,5 +32,6 @@ c(3.14)
 c(None)   
 
 print(c("стоп")) 
+
 
 
