@@ -2,7 +2,7 @@ def validate(arg1):
     def decorator(func):
         def wrapper(arg):
             if not condition(arg):
-                print("Ошибка: аргумент неправильный")
+                print(f"Ошибка: аргумент {arg} неправильный")
                 return None
             return func(arg)
         return wrapper
@@ -32,3 +32,4 @@ c(3.14)
 c(None)   
 
 print(c("стоп")) 
+
