@@ -1,11 +1,11 @@
 def validate(arg1):
-    def decorator(func):
-        def wrapper(arg):
+    def decorator(f):
+        def provaerka(arg):
             if not condition(arg):
                 print(f"Ошибка: аргумент {arg} неправильный")
                 return None
             return func(arg)
-        return wrapper
+        return proverka
     return decorator
 
 def make_zamikanie():
@@ -32,4 +32,5 @@ c(3.14)
 c(None)   
 
 print(c("стоп")) 
+
 
