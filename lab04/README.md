@@ -21,6 +21,7 @@
 **Задание:** Декоратор для валидации аргументов функции с помощью условий.
 
 **Ход выполнения:** 
+1. Создан декоратор validate(arg)
 
 **Результат:** <img width="289" height="47" alt="image" src="https://github.com/user-attachments/assets/b9785881-f2d8-4193-a7c8-742ccf1f476b" />
 
