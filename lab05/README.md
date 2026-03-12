@@ -11,6 +11,6 @@
 
  **Используемые материалы:** 
  
- (os.walk)[https://docs.python.org/3/library/os.html#os.walk]
+ [os.walk](https://docs.python.org/3/library/os.html#os.walk)
  
 
