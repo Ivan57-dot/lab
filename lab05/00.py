@@ -16,7 +16,7 @@ print("Найдено:", [os.path.basename(f) for f in files])
 big_files = list(filter(lambda f: os.path.getsize(f) > 100, files))
 print("Большие (>100 байт):", [os.path.basename(f) for f in big_files])
 
-sizes = list(map(os.path.getsize, files))  # map используется
+sizes = list(map(os.path.getsize, files))  
 
 for i, f in enumerate(files, 1):
     os.rename(f, os.path.join(os.path.dirname(f), f"file_{i}.txt"))
