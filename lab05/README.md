@@ -14,5 +14,7 @@
  [os.walk](https://pythonworld.ru/moduli/modul-os.html)
  
  [map, filter](https://docs.python.org/3/library/functions.html)
+
+ [Переименование файлов](https://qna.habr.com/q/690281)
  
 
