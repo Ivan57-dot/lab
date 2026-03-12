@@ -15,6 +15,6 @@
  
  [map, filter](https://docs.python.org/3/library/functions.html)
 
- [Переименование файлов](https://qna.habr.com/q/690281)
+ [Переименование файлов](https://sky.pro/wiki/media/kak-pereimenovat-fajl-s-pomoshhyu-python/)
  
 
