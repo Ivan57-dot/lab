@@ -8,5 +8,8 @@
  3. Переименование файлов по шаблону file_1.txt, file_2.txt и так далее.
 
  **Результат:** <img width="456" height="45" alt="image" src="https://github.com/user-attachments/assets/b0decbdd-ea26-44f3-b8ef-424ff25a5b15" />
+
+ **Используемые материалы:** 
+ (https://docs.python.org/3/library/os.html#os.walk)[os.walk]
  
 
