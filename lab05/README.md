@@ -12,6 +12,7 @@
  **Используемые материалы:** 
  
  [os.walk](https://docs.python.org/3/library/os.html#os.walk)
+ 
  [map, filter](https://docs.python.org/3/library/functions.html)
  
 
