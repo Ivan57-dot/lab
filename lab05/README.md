@@ -4,7 +4,7 @@
 
  **Ход выполнения:**
  1. Реализован генератор find_files(path), который использует os.walk() для обхода каталога и подкаталогов. Генератор возвращает полные пути к файлам с расширением .txt.
- 2. Применение filter для отбора файлов размером более 100 байт и map для получения размеров всех найденных файлов.
+ 2. Применение filter для отбора файлов размером более 100 байт.
  3. Переименование файлов по шаблону file_1.txt, file_2.txt и так далее.
 
  **Результат:** <img width="456" height="45" alt="image" src="https://github.com/user-attachments/assets/b0decbdd-ea26-44f3-b8ef-424ff25a5b15" />
@@ -13,7 +13,7 @@
  
  [os.walk](https://pythonworld.ru/moduli/modul-os.html)
  
- [map, filter](https://docs.python.org/3/library/functions.html)
+ [filter](https://docs.python.org/3/library/functions.html)
 
  [Переименование файлов](https://sky.pro/wiki/media/kak-pereimenovat-fajl-s-pomoshhyu-python/)
  
