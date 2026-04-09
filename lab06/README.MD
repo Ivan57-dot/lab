@@ -10,3 +10,4 @@
 
 ## **Используемые материалы:**
 [Tkinter](https://docs.python.org/3/library/tkinter.html)
+[python-docx](https://python-docx.thedocs.io/)
