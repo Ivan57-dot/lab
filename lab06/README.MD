@@ -9,8 +9,8 @@
 ## **Результат:** 
 
 ## **Используемые материалы:**
-[Tkinter](https://docs.python.org/3/library/tkinter.html)
+[Tkinter - документация](https://docs.python.org/3/library/tkinter.html)
 
-[python-docx](https://docs-python.ru/packages/modul-python-docx-python/brief-description/)
+[python-docx - документация]](https://docs-python.ru/packages/modul-python-docx-python/brief-description/)
 
-[OpenPyXL](https://openpyxl.readthedocs.io/en/stable/)
+[OpenPyXL - документация]](https://openpyxl.readthedocs.io/en/stable/)
