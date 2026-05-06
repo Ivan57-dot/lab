@@ -5,11 +5,18 @@
 
 ## **Ход работы:**
 1. Реализованы:
-     - Абстрактный класс - ClothingItem(ABC);
-     - Абстрактные методы - @abstractmethod для fabric() и cost();
+     - Абстрактный класс ClothingItem(ABC): запрещает создавать элемент "просто одежда";
+     - Абстрактные методы @abstractmethod, который обязаны наследовать fabric() и cost();
      - Наследование - Jacket, Trousers, ThreePieceSuit наследуют ClothingItem;
-     - Managed-фтрибут - @prtopery size + @size.setter с проверкой диапозона 44-60;
-     - Dunder-методы - __str__, __repr__, __eq__, и другие.
+     - Managed-атрибут - @properеy size + @size.setter с проверкой диапозона 44-60;
+     - Dunder-методы.
+            1. __str__: красивый вывод;
+            2. __repr__: вывод для отладки;
+            3. __eq__: сравнение пиджаков;
+            4. __hash__: хэш для множеств/словарей;
+            5. __len__: количество предметов;
+            6. __contains__: проверка вхождения;
+            7. __lt__: сравнение <.
 2. Графический интерфейс переделан с помощью PySimpleGUI
 
 ## **Результат:** 
@@ -17,6 +24,10 @@
 
 
 ## **Используемые материалы:**
-[abc](https://docs.python.org/3/library/abc.html)
+[абстрактные классы и методы](https://metanit.com/python/tutorial/7.8.php)
 
 [PySimpleGUI](https://docs.pysimplegui.com/en/latest/)
+
+[dunder-методы](https://timeweb.cloud/tutorials/python/dunder-metody-v-python)
+
+[наследование](https://metanit.com/python/tutorial/7.3.php)
