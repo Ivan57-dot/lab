@@ -1,0 +1,57 @@
+import PySimpleGUI as sg
+from snake import Game, GameOver
+
+CELL, SIZE = 25, 20
+W = CELL * SIZE
+
+layout = [
+    [sg.Graph(canvas_size=(W, W), graph_bottom_left=(0, W), graph_top_right=(W, 0), 
+              background_color='black', key='-G-')],
+    [sg.Text('Score: 0', key='-S-', text_color='white', background_color='black')],
+    [sg.Button('Exit')]
+]
+
+window = sg.Window('Snake', layout, finalize=True, return_keyboard_events=True)
+graph = window['-G-']
+game = Game()
+
+def draw():
+    graph.erase()
+    #Змейка
+    for i, (x, y) in enumerate(game.snake.body):
+        color = '#2ecc71' if i == 0 else '#27ae60'
+        graph.draw_rectangle((x*CELL, y*CELL), ((x+1)*CELL, (y+1)*CELL), fill_color=color)
+    # Рисуем еду
+    f = game.food
+    graph.draw_rectangle((f.x*CELL, f.y*CELL), ((f.x+1)*CELL, (f.y+1)*CELL), fill_color='red')
+    window['-S-'].update(f'Score: {game.score}')
+
+while True:
+    event, _ = window.read(timeout=100)
+    
+    if event in (sg.WIN_CLOSED, 'Exit'):
+        break
+    
+    #Управление
+    if event in ('Up:38', 'Up'):
+        game.change_dir(0, -1)
+    elif event in ('Down:40', 'Down'):
+        game.change_dir(0, 1)
+    elif event in ('Left:37', 'Left'):
+        game.change_dir(-1, 0)
+    elif event in ('Right:39', 'Right'):
+        game.change_dir(1, 0)
+    
+    try:
+        game.update()
+        draw()
+    except GameOver:
+        graph.draw_text(f'Game Over!\nScore: {game.score}', 
+                       (W//2, W//2), color='white', font=('Arial', 16))
+        while True:
+            event, _ = window.read()
+            if event in (sg.WIN_CLOSED, 'Exit'):
+                break
+        break
+
+window.close()
