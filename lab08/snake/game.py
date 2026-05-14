@@ -18,12 +18,20 @@ class Game:
     
     def update(self):
         grow = self.snake.head == (self.food.x, self.food.y)
-        self.snake.move(grow)
-        self.snake.check()
+        
+        # ПОЛИМОРФИЗМ В ДЕЙСТВИИ!
+        self.snake.update(grow)   # передаём grow через параметр
+        self.food.update()        # еда увеличивает value
+        
         if grow:
-            self.score += 1
+            self.score += int(self.food.value)
             self._spawn_food()
     
-    def change_dir(self, dx, dy): self.snake.change_dir(dx, dy)
-    def __str__(self): return f"Score: {self.score}"
-    def __len__(self): return len(self.snake)
+    def change_dir(self, dx, dy):
+        self.snake.change_dir(dx, dy)
+    
+    def __str__(self): 
+        return f"Score: {self.score}"
+    
+    def __len__(self): 
+        return len(self.snake)
