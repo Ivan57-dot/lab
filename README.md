@@ -10,6 +10,8 @@
 <img width="538" height="609" alt="image" src="https://github.com/user-attachments/assets/28b36448-940f-41fe-a620-e6288b719326" />
 
 ## **Используемые источники:**
+[собственные исключения](https://habr.com/ru/companies/piter/articles/537642/)
+[ООП](https://habr.com/ru/articles/874468/)
 
 
 
