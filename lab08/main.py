@@ -5,9 +5,10 @@ CELL, SIZE = 25, 20
 W = CELL * SIZE
 
 layout = [
-    [sg.Graph((W, W), (0, W), (W, 0), background_color='black', key='-G-',
-              enable_events=True, drag_submits=False)],
+    [sg.Graph((W, W), (0, W), (W, 0), background_color='black', key='-G-')],
     [sg.Text('Score: 0', key='-S-')],
+    [sg.Button('↑', key='Up'), sg.Button('↓', key='Down'), 
+     sg.Button('←', key='Left'), sg.Button('→', key='Right')],
     [sg.Button('Exit')]
 ]
 
@@ -29,15 +30,11 @@ while True:
     
     if event == sg.WIN_CLOSED or event == 'Exit':
         break
-    
-    if event == 'Up' or event == 'w':
-        game.change_dir(0, -1)
-    elif event == 'Down' or event == 's':
-        game.change_dir(0, 1)
-    elif event == 'Left' or event == 'a':
-        game.change_dir(-1, 0)
-    elif event == 'Right' or event == 'd':
-        game.change_dir(1, 0)
+  
+    if event in ('Up', 'w'): game.change_dir(0, -1)
+    elif event in ('Down', 's'): game.change_dir(0, 1)
+    elif event in ('Left', 'a'): game.change_dir(-1, 0)
+    elif event in ('Right', 'd'): game.change_dir(1, 0)
     
     try:
         game.update()
