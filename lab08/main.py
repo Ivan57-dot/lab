@@ -5,7 +5,8 @@ CELL, SIZE = 25, 20
 W = CELL * SIZE
 
 layout = [
-    [sg.Graph((W, W), (0, W), (W, 0), background_color='black', key='-G-')],
+    [sg.Graph((W, W), (0, W), (W, 0), background_color='black', key='-G-',
+              enable_events=True, drag_submits=False)],
     [sg.Text('Score: 0', key='-S-')],
     [sg.Button('Exit')]
 ]
@@ -13,18 +14,6 @@ layout = [
 window = sg.Window('Snake', layout, finalize=True)
 graph = window['-G-']
 game = Game()
-
-# Универсальная обработка клавиш
-key_map = {
-    'Up': (0, -1),
-    'Down': (0, 1),
-    'Left': (-1, 0),
-    'Right': (1, 0),
-    'w': (0, -1),   # WASD тоже работает
-    's': (0, 1),
-    'a': (-1, 0),
-    'd': (1, 0),
-}
 
 def draw():
     graph.erase()
@@ -41,10 +30,14 @@ while True:
     if event == sg.WIN_CLOSED or event == 'Exit':
         break
     
-    # Универсальная проверка клавиш
-    if event in key_map:
-        dx, dy = key_map[event]
-        game.change_dir(dx, dy)
+    if event == 'Up' or event == 'w':
+        game.change_dir(0, -1)
+    elif event == 'Down' or event == 's':
+        game.change_dir(0, 1)
+    elif event == 'Left' or event == 'a':
+        game.change_dir(-1, 0)
+    elif event == 'Right' or event == 'd':
+        game.change_dir(1, 0)
     
     try:
         game.update()
