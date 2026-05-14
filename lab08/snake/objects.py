@@ -20,7 +20,7 @@ class Snake(GameObject):
         super().__init__(10,10)
         self.body = [(10,10), (10,11), (10,12)]
         self.dx, self.dy = 0, -1
-        self._grow_flag = False  # managed attribute
+        self._grow_flag = False
     
     @property
     def head(self): 
@@ -52,7 +52,7 @@ class Snake(GameObject):
     def update(self, grow=False):
         """ПОЛИМОРФИЗМ: змейка двигается"""
         self._grow_flag = grow
-        self.move()
+        self.move()          # ← теперь без аргументов
         self.check()
     
     def __len__(self): 
@@ -64,7 +64,7 @@ class Snake(GameObject):
 class Food(GameObject):
     def __init__(self, x, y):
         super().__init__(x, y)
-        self._value = 1  # managed attribute
+        self._value = 1
     
     @property
     def value(self):
