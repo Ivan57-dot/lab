@@ -5,23 +5,32 @@ CELL, SIZE = 25, 20
 W = CELL * SIZE
 
 layout = [
-    [sg.Graph(canvas_size=(W, W), graph_bottom_left=(0, W), graph_top_right=(W, 0), 
-              background_color='black', key='-G-')],
-    [sg.Text('Score: 0', key='-S-', text_color='white', background_color='black')],
+    [sg.Graph((W, W), (0, W), (W, 0), background_color='black', key='-G-')],
+    [sg.Text('Score: 0', key='-S-')],
     [sg.Button('Exit')]
 ]
 
-window = sg.Window('Snake', layout, finalize=True, return_keyboard_events=True)
+window = sg.Window('Snake', layout, finalize=True)
 graph = window['-G-']
 game = Game()
 
+# Универсальная обработка клавиш
+key_map = {
+    'Up': (0, -1),
+    'Down': (0, 1),
+    'Left': (-1, 0),
+    'Right': (1, 0),
+    'w': (0, -1),   # WASD тоже работает
+    's': (0, 1),
+    'a': (-1, 0),
+    'd': (1, 0),
+}
+
 def draw():
     graph.erase()
-    #Змейка
     for i, (x, y) in enumerate(game.snake.body):
-        color = '#2ecc71' if i == 0 else '#27ae60'
-        graph.draw_rectangle((x*CELL, y*CELL), ((x+1)*CELL, (y+1)*CELL), fill_color=color)
-    # Рисуем еду
+        graph.draw_rectangle((x*CELL, y*CELL), ((x+1)*CELL, (y+1)*CELL), 
+                            fill_color='green' if i else 'darkgreen')
     f = game.food
     graph.draw_rectangle((f.x*CELL, f.y*CELL), ((f.x+1)*CELL, (f.y+1)*CELL), fill_color='red')
     window['-S-'].update(f'Score: {game.score}')
@@ -29,29 +38,20 @@ def draw():
 while True:
     event, _ = window.read(timeout=100)
     
-    if event in (sg.WIN_CLOSED, 'Exit'):
+    if event == sg.WIN_CLOSED or event == 'Exit':
         break
     
-    #Управление
-    if event in ('Up:38', 'Up'):
-        game.change_dir(0, -1)
-    elif event in ('Down:40', 'Down'):
-        game.change_dir(0, 1)
-    elif event in ('Left:37', 'Left'):
-        game.change_dir(-1, 0)
-    elif event in ('Right:39', 'Right'):
-        game.change_dir(1, 0)
+    # Универсальная проверка клавиш
+    if event in key_map:
+        dx, dy = key_map[event]
+        game.change_dir(dx, dy)
     
     try:
         game.update()
         draw()
     except GameOver:
-        graph.draw_text(f'Game Over!\nScore: {game.score}', 
-                       (W//2, W//2), color='white', font=('Arial', 16))
-        while True:
-            event, _ = window.read()
-            if event in (sg.WIN_CLOSED, 'Exit'):
-                break
+        graph.draw_text(f'Game Over!\nScore: {game.score}', (W//2, W//2), color='white')
+        window.read()
         break
 
 window.close()
