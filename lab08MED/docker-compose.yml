@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: clothing_postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
