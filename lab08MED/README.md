@@ -17,6 +17,8 @@
 
 ## **6. Проверка работы**
 <img width="295" height="202" alt="image" src="https://github.com/user-attachments/assets/ce5880dc-3527-4201-be63-231b38dfe434" />
+<img width="313" height="164" alt="image" src="https://github.com/user-attachments/assets/6b24c7c0-048c-43d6-955b-89bd55af782f" />
+
 
 
 
