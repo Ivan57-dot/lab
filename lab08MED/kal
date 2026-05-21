@@ -1,0 +1,20 @@
+import sqlite3
+from datetime import datetime
+
+DB_PATH = "snake_stats.db"
+
+def save_score(score):
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("CREATE TABLE IF NOT EXISTS snake_stats (id INTEGER PRIMARY KEY AUTOINCREMENT, score INTEGER, date TEXT)")
+    cur.execute("INSERT INTO snake_stats (score, date) VALUES (?, ?)", (score, datetime.now().isoformat()))
+    conn.commit()
+    conn.close()
+
+def get_scores():
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("SELECT score, date FROM snake_stats ORDER BY score DESC")
+    rows = cur.fetchall()
+    conn.close()
+    return rows
