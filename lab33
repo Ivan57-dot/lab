@@ -1,0 +1,174 @@
+import tkinter as tk
+from tkinter import ttk
+from decimal import Decimal, getcontext, ROUND_CEILING
+
+getcontext().prec = 50   
+tablica = {}
+
+
+# Таблица вероятностей и отрезков 
+
+def postroit_tablicu(text):
+    chastoty = []
+    for symbol in set(text):
+        chastoty.append((-text.count(symbol), symbol))
+    chastoty.sort()
+
+    rezultat = {}
+    range_low = Decimal(0)
+    for minus_count, symbol in chastoty:
+        veroyatnost = Decimal(-minus_count) / len(text)
+        range_high = range_low + veroyatnost
+        rezultat[symbol] = (veroyatnost, range_low, range_high)
+        range_low = range_high
+    return rezultat
+
+
+def okruglit(chislo, znakov):
+    return format(round(chislo, znakov), 'f')
+
+
+def okruglit_vverh(chislo, znakov):
+    # Округление вверх: левая граница не уходит левее интервала,
+    # а правая не может попасть внутрь интервала
+    shag = Decimal(1).scaleb(-znakov)
+    return format(chislo.quantize(shag, rounding=ROUND_CEILING), 'f')
+
+
+def skolko_znakov(low, high):
+    znakov = 2 - (high - low).adjusted()
+    if znakov < 4:
+        znakov = 4
+    if znakov > 48:
+        znakov = 48
+    return znakov
+
+
+# Кодирование и декодирование
+
+def zakodirovat(text):
+    low = Decimal(0)
+    high = Decimal(1)
+    shagi = [(0, 'Нет', '[0; 1)')]
+
+    nomer_shaga = 0
+    for symbol in text:
+        nomer_shaga += 1
+        veroyatnost, range_low, range_high = tablica[symbol]
+
+        shirina = high - low
+        novyj_high = low + shirina * range_high   
+        novyj_low = low + shirina * range_low     
+        low = novyj_low
+        high = novyj_high
+
+        znakov = skolko_znakov(low, high)
+        interval = '[' + okruglit_vverh(low, znakov) + '; ' + okruglit_vverh(high, znakov) + ')'
+        shagi.append((nomer_shaga, text[:nomer_shaga], interval))
+
+    return low, high, shagi
+
+
+def najti_simvol(code):
+    for symbol in tablica:
+        veroyatnost, range_low, range_high = tablica[symbol]
+        if range_low <= code and code < range_high:
+            return symbol
+    return None
+
+
+def dekodirovat(code, dlina):
+    vosstanovleno = ''
+    shagi = []
+
+    for nomer_shaga in range(1, dlina + 1):
+        symbol = najti_simvol(code)
+        if symbol is None:
+            break
+        veroyatnost, range_low, range_high = tablica[symbol]
+
+        vosstanovleno = vosstanovleno + symbol
+        code = (code - range_low) / (range_high - range_low)   # нормализация к [0; 1)
+        shagi.append((nomer_shaga, symbol, okruglit(code, 8), vosstanovleno))
+
+    return vosstanovleno, shagi
+
+
+# Обработчики кнопок
+
+def zapolnit_tablicu(tablica_na_ekrane, stroki):
+    for staraya_stroka in tablica_na_ekrane.get_children():
+        tablica_na_ekrane.delete(staraya_stroka)
+    for stroka in stroki:
+        tablica_na_ekrane.insert('', 'end', values=stroka)
+
+
+def pri_nazhatii_zakodirovat():
+    global tablica
+    text = pole_teksta.get()
+    tablica = postroit_tablicu(text)
+
+    # Таблица символов
+    stroki = []
+    for symbol in tablica:
+        veroyatnost, range_low, range_high = tablica[symbol]
+        otrezok = '[' + okruglit(range_low, 4) + '; ' + okruglit(range_high, 4) + ')'
+        stroki.append((symbol, okruglit(veroyatnost, 4), otrezok))
+    zapolnit_tablicu(tablica_simvolov, stroki)
+
+    # Шаги кодирования
+    low, high, shagi = zakodirovat(text)
+    zapolnit_tablicu(tablica_kodirovaniya, shagi)
+
+    # В поле кода подставляем левую границу итогового интервала
+    pole_koda.delete(0, 'end')
+    pole_koda.insert(0, okruglit_vverh(low, skolko_znakov(low, high)))
+    metka_rezultata.config(text='')
+
+
+def pri_nazhatii_dekodirovat():
+    code = Decimal(pole_koda.get())
+    dlina = len(pole_teksta.get())
+    vosstanovleno, shagi = dekodirovat(code, dlina)
+    zapolnit_tablicu(tablica_dekodirovaniya, shagi)
+    metka_rezultata.config(text='Восстановлено: ' + vosstanovleno)
+
+
+# Интерфейс
+
+def sozdat_tablicu(okno, zagolovok, kolonki, shirina_kolonok):
+    ttk.Label(okno, text=zagolovok).pack(anchor='w', padx=5)
+    tablica_na_ekrane = ttk.Treeview(okno, columns=kolonki, show='headings', height=6)
+    for i in range(len(kolonki)):
+        tablica_na_ekrane.heading(kolonki[i], text=kolonki[i])
+        tablica_na_ekrane.column(kolonki[i], width=shirina_kolonok[i])
+    tablica_na_ekrane.pack(fill='both', expand=True, padx=5)
+    return tablica_na_ekrane
+
+
+okno = tk.Tk()
+okno.title('Арифметическое кодирование')
+okno.geometry('900x750')
+
+ttk.Label(okno, text='Исходный текст:').pack(anchor='w', padx=5)
+pole_teksta = ttk.Entry(okno)
+pole_teksta.insert(0, 'ЭТОТ_МЕТОД_ЛУЧШЕ_ХАФФМАНА')
+pole_teksta.pack(fill='x', padx=5)
+ttk.Button(okno, text='Закодировать', command=pri_nazhatii_zakodirovat).pack(pady=3)
+
+tablica_simvolov = sozdat_tablicu(okno, 'Таблица символов',
+                                  ('Символ', 'Вероятность', 'Отрезок'), (80, 120, 600))
+tablica_kodirovaniya = sozdat_tablicu(okno, 'Кодирование',
+                                      ('Шаг', 'Цепочка', 'Интервал'), (50, 250, 550))
+
+ttk.Label(okno, text='Код (левая граница итогового интервала; можно вставить правую):').pack(anchor='w', padx=5)
+pole_koda = ttk.Entry(okno)
+pole_koda.pack(fill='x', padx=5)
+ttk.Button(okno, text='Декодировать', command=pri_nazhatii_dekodirovat).pack(pady=3)
+
+tablica_dekodirovaniya = sozdat_tablicu(okno, 'Декодирование',
+                                        ('Шаг', 'Символ', 'Новый code', 'Результат'), (50, 80, 450, 250))
+metka_rezultata = ttk.Label(okno, font=('Arial', 12, 'bold'))
+metka_rezultata.pack(pady=3)
+
+okno.mainloop()
