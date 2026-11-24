@@ -1,174 +1,100 @@
 import tkinter as tk
-from tkinter import ttk
-from decimal import Decimal, getcontext, ROUND_CEILING
+from tkinter import ttk, messagebox
+import datetime
 
-getcontext().prec = 50   
-tablica = {}
+# Пустые "базы данных" (списки)
+clients = []
+orders = []
+bookings = []
+report_text = ""
 
+def login():
+    win = tk.Tk(); win.title("Вход"); win.geometry("250x180")
+    tk.Label(win, text="Логин:").pack(); l = tk.Entry(win); l.pack()
+    tk.Label(win, text="Пароль:").pack(); p = tk.Entry(win, show="*"); p.pack()
+    
+    def check():
+        if l.get() == "admin" and p.get() == "admin123": 
+            win.destroy(); main()
+        else: 
+            messagebox.showerror("Ошибка", "Неверный логин или пароль (admin / admin123)")
+            
+    tk.Button(win, text="Войти", command=check).pack(pady=10); win.mainloop()
 
-# Таблица вероятностей и отрезков 
+def main():
+    root = tk.Tk(); root.title("АИС Бассейн (Демо)"); root.geometry("900x550")
+    tabs = ttk.Notebook(root); tabs.pack(fill="both", expand=True)
 
-def postroit_tablicu(text):
-    chastoty = []
-    for symbol in set(text):
-        chastoty.append((-text.count(symbol), symbol))
-    chastoty.sort()
+    # --- 1. КЛИЕНТЫ ---
+    f1 = tk.Frame(tabs); tabs.add(f1, text="Клиенты")
+    tree1 = ttk.Treeview(f1, columns=("ID", "ФИО", "Email", "Телефон", "Дата рожд."), show="headings")
+    for c in ("ID", "ФИО", "Email", "Телефон", "Дата рожд."): tree1.heading(c, text=c)
+    tree1.pack(fill="both", expand=True)
 
-    rezultat = {}
-    range_low = Decimal(0)
-    for minus_count, symbol in chastoty:
-        veroyatnost = Decimal(-minus_count) / len(text)
-        range_high = range_low + veroyatnost
-        rezultat[symbol] = (veroyatnost, range_low, range_high)
-        range_low = range_high
-    return rezultat
+    def add_client():
+        w = tk.Toplevel(root); w.title("Новый клиент")
+        tk.Label(w, text="ФИО:").pack(); e1 = tk.Entry(w); e1.pack()
+        tk.Label(w, text="Телефон:").pack(); e2 = tk.Entry(w); e2.pack()
+        def save():
+            clients.append([len(clients)+1, e1.get(), "test@mail.ru", e2.get(), "01.01.2000"])
+            tree1.insert("", "end", values=clients[-1])
+            w.destroy()
+        tk.Button(w, text="Сохранить", command=save).pack(pady=5)
 
+    def del_client():
+        sel = tree1.selection()
+        if sel: tree1.delete(sel)
 
-def okruglit(chislo, znakov):
-    return format(round(chislo, znakov), 'f')
+    tk.Button(f1, text="Добавить", command=add_client).pack(pady=5)
+    tk.Button(f1, text="Удалить", command=del_client).pack(pady=5)
 
+    # --- 2. АБОНЕМЕНТЫ ---
+    f2 = tk.Frame(tabs); tabs.add(f2, text="Абонементы")
+    tree2 = ttk.Treeview(f2, columns=("ID", "Клиент", "Абонемент", "Стоимость"), show="headings")
+    for c in ("ID", "Клиент", "Абонемент", "Стоимость"): tree2.heading(c, text=c)
+    tree2.pack(fill="both", expand=True)
 
-def okruglit_vverh(chislo, znakov):
-    # Округление вверх: левая граница не уходит левее интервала,
-    # а правая не может попасть внутрь интервала
-    shag = Decimal(1).scaleb(-znakov)
-    return format(chislo.quantize(shag, rounding=ROUND_CEILING), 'f')
+    def add_order():
+        w = tk.Toplevel(root); w.title("Оформить абонемент")
+        tk.Label(w, text="Клиент:").pack(); cb1 = ttk.Combobox(w, values=["Клиент 1", "Клиент 2"]); cb1.pack()
+        tk.Label(w, text="Абонемент:").pack(); cb2 = ttk.Combobox(w, values=["Разовый (500)", "1 месяц (3000)", "3 месяца (8000)"]); cb2.pack()
+        def save():
+            cost = int(cb2.get().split("(")[1][:-1])
+            orders.append([len(orders)+1, cb1.get(), cb2.get().split(" (")[0], cost])
+            tree2.insert("", "end", values=orders[-1])
+            w.destroy()
+        tk.Button(w, text="Оформить", command=save).pack(pady=5)
 
+    tk.Button(f2, text="Оформить", command=add_order).pack(pady=5)
 
-def skolko_znakov(low, high):
-    znakov = 2 - (high - low).adjusted()
-    if znakov < 4:
-        znakov = 4
-    if znakov > 48:
-        znakov = 48
-    return znakov
+    # --- 3. ЗАПИСИ ---
+    f3 = tk.Frame(tabs); tabs.add(f3, text="Записи на сеансы")
+    tree3 = ttk.Treeview(f3, columns=("ID", "Клиент", "Дата", "Время"), show="headings")
+    for c in ("ID", "Клиент", "Дата", "Время"): tree3.heading(c, text=c)
+    tree3.pack(fill="both", expand=True)
 
+    def add_booking():
+        w = tk.Toplevel(root); w.title("Записать на сеанс")
+        tk.Label(w, text="Клиент:").pack(); cb1 = ttk.Combobox(w, values=["Клиент 1", "Клиент 2"]); cb1.pack()
+        tk.Label(w, text="Время:").pack(); cb2 = ttk.Combobox(w, values=["08:00 (дор. 1)", "10:00 (дор. 2)"]); cb2.pack()
+        def save():
+            bookings.append([len(bookings)+1, cb1.get(), "24.11.2026", cb2.get().split(" (")[0]])
+            tree3.insert("", "end", values=bookings[-1])
+            w.destroy()
+        tk.Button(w, text="Записать", command=save).pack(pady=5)
 
-# Кодирование и декодирование
+    tk.Button(f3, text="Записать", command=add_booking).pack(pady=5)
 
-def zakodirovat(text):
-    low = Decimal(0)
-    high = Decimal(1)
-    shagi = [(0, 'Нет', '[0; 1)')]
+    # --- 4. ОТЧЕТ ---
+    f4 = tk.Frame(tabs); tabs.add(f4, text="Отчёт")
+    txt = tk.Text(f4); txt.pack(fill="both", expand=True)
+    def do_report():
+        rev = sum(o[3] for o in orders)
+        txt.delete("1.0", tk.END)
+        txt.insert(tk.END, f"Выручка: {rev} руб.\nКлиентов: {len(clients)}\nЗаписей: {len(bookings)}")
+    
+    tk.Button(f4, text="Сформировать", command=do_report).pack(pady=5)
 
-    nomer_shaga = 0
-    for symbol in text:
-        nomer_shaga += 1
-        veroyatnost, range_low, range_high = tablica[symbol]
+    root.mainloop()
 
-        shirina = high - low
-        novyj_high = low + shirina * range_high   
-        novyj_low = low + shirina * range_low     
-        low = novyj_low
-        high = novyj_high
-
-        znakov = skolko_znakov(low, high)
-        interval = '[' + okruglit_vverh(low, znakov) + '; ' + okruglit_vverh(high, znakov) + ')'
-        shagi.append((nomer_shaga, text[:nomer_shaga], interval))
-
-    return low, high, shagi
-
-
-def najti_simvol(code):
-    for symbol in tablica:
-        veroyatnost, range_low, range_high = tablica[symbol]
-        if range_low <= code and code < range_high:
-            return symbol
-    return None
-
-
-def dekodirovat(code, dlina):
-    vosstanovleno = ''
-    shagi = []
-
-    for nomer_shaga in range(1, dlina + 1):
-        symbol = najti_simvol(code)
-        if symbol is None:
-            break
-        veroyatnost, range_low, range_high = tablica[symbol]
-
-        vosstanovleno = vosstanovleno + symbol
-        code = (code - range_low) / (range_high - range_low)   # нормализация к [0; 1)
-        shagi.append((nomer_shaga, symbol, okruglit(code, 8), vosstanovleno))
-
-    return vosstanovleno, shagi
-
-
-# Обработчики кнопок
-
-def zapolnit_tablicu(tablica_na_ekrane, stroki):
-    for staraya_stroka in tablica_na_ekrane.get_children():
-        tablica_na_ekrane.delete(staraya_stroka)
-    for stroka in stroki:
-        tablica_na_ekrane.insert('', 'end', values=stroka)
-
-
-def pri_nazhatii_zakodirovat():
-    global tablica
-    text = pole_teksta.get()
-    tablica = postroit_tablicu(text)
-
-    # Таблица символов
-    stroki = []
-    for symbol in tablica:
-        veroyatnost, range_low, range_high = tablica[symbol]
-        otrezok = '[' + okruglit(range_low, 4) + '; ' + okruglit(range_high, 4) + ')'
-        stroki.append((symbol, okruglit(veroyatnost, 4), otrezok))
-    zapolnit_tablicu(tablica_simvolov, stroki)
-
-    # Шаги кодирования
-    low, high, shagi = zakodirovat(text)
-    zapolnit_tablicu(tablica_kodirovaniya, shagi)
-
-    # В поле кода подставляем левую границу итогового интервала
-    pole_koda.delete(0, 'end')
-    pole_koda.insert(0, okruglit_vverh(low, skolko_znakov(low, high)))
-    metka_rezultata.config(text='')
-
-
-def pri_nazhatii_dekodirovat():
-    code = Decimal(pole_koda.get())
-    dlina = len(pole_teksta.get())
-    vosstanovleno, shagi = dekodirovat(code, dlina)
-    zapolnit_tablicu(tablica_dekodirovaniya, shagi)
-    metka_rezultata.config(text='Восстановлено: ' + vosstanovleno)
-
-
-# Интерфейс
-
-def sozdat_tablicu(okno, zagolovok, kolonki, shirina_kolonok):
-    ttk.Label(okno, text=zagolovok).pack(anchor='w', padx=5)
-    tablica_na_ekrane = ttk.Treeview(okno, columns=kolonki, show='headings', height=6)
-    for i in range(len(kolonki)):
-        tablica_na_ekrane.heading(kolonki[i], text=kolonki[i])
-        tablica_na_ekrane.column(kolonki[i], width=shirina_kolonok[i])
-    tablica_na_ekrane.pack(fill='both', expand=True, padx=5)
-    return tablica_na_ekrane
-
-
-okno = tk.Tk()
-okno.title('Арифметическое кодирование')
-okno.geometry('900x750')
-
-ttk.Label(okno, text='Исходный текст:').pack(anchor='w', padx=5)
-pole_teksta = ttk.Entry(okno)
-pole_teksta.insert(0, 'ЭТОТ_МЕТОД_ЛУЧШЕ_ХАФФМАНА')
-pole_teksta.pack(fill='x', padx=5)
-ttk.Button(okno, text='Закодировать', command=pri_nazhatii_zakodirovat).pack(pady=3)
-
-tablica_simvolov = sozdat_tablicu(okno, 'Таблица символов',
-                                  ('Символ', 'Вероятность', 'Отрезок'), (80, 120, 600))
-tablica_kodirovaniya = sozdat_tablicu(okno, 'Кодирование',
-                                      ('Шаг', 'Цепочка', 'Интервал'), (50, 250, 550))
-
-ttk.Label(okno, text='Код (левая граница итогового интервала; можно вставить правую):').pack(anchor='w', padx=5)
-pole_koda = ttk.Entry(okno)
-pole_koda.pack(fill='x', padx=5)
-ttk.Button(okno, text='Декодировать', command=pri_nazhatii_dekodirovat).pack(pady=3)
-
-tablica_dekodirovaniya = sozdat_tablicu(okno, 'Декодирование',
-                                        ('Шаг', 'Символ', 'Новый code', 'Результат'), (50, 80, 450, 250))
-metka_rezultata = ttk.Label(okno, font=('Arial', 12, 'bold'))
-metka_rezultata.pack(pady=3)
-
-okno.mainloop()
+login()
